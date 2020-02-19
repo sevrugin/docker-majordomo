@@ -7,4 +7,4 @@ FROM phpmyadmin/phpmyadmin
 # https://gist.github.com/jgamblin/6015a2020c1de3bc3aab19b361573b7f
 #
 # make sure root login is disabled
-RUN sed -i -e 's/^root::/root:!:/' /etc/shadow
+#RUN sed -i -e 's/^root::/root:!:/' /etc/shadow
