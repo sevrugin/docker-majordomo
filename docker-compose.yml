@@ -1,0 +1,74 @@
+version: '3'
+services:
+    web:
+        image: nginx
+        volumes:
+            - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
+            - "./app/:/var/www/html"
+        ports:
+            - "80:80"
+            - "443:443"
+        environment:
+            - NGINX_HOST=${NGINX_HOST:-dev.local}
+        command: "nginx -g 'daemon off;'"
+        restart: always
+        networks:
+            - internal
+        depends_on:
+            - php
+    php:
+        restart: always
+        volumes:
+            - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+            - "./etc/supervisor.conf:/etc/supervisor.conf"
+            - "./app/:/var/www/html"
+        build:
+            context: .
+            dockerfile: ./etc/docker/php/Dockerfile
+            args:
+                USER_ID: ${USER_ID:-0}
+                GROUP_ID: ${GROUP_ID:-0}
+        environment:
+            PHP_IDE_CONFIG: serverName=${NGINX_HOST:-dev.local}
+            XDEBUG_CONFIG:  remote_host=${XDEBUG_LOCAL_IP:-192.168.220.1}
+        networks:
+            - internal
+        depends_on:
+            - mysqldb
+    myadmin:
+        restart: always
+        build:
+            context: .
+            dockerfile: ./etc/docker/phpmyadmin/Dockerfile
+        ports:
+            - "8081:80"
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=${DB_HOST}
+        networks:
+            - internal
+        depends_on:
+            - mysqldb
+    mysqldb:
+        image: linuxserver/mariadb
+        restart: always
+        volumes:
+            - "./data/mysql:/var/lib/mysql"
+        env_file:
+            - ".env"
+        environment:
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+        ports:
+            - "3306:3306"
+        networks:
+            - internal
+networks:
+    internal:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: ${INTERNAL_SUBNET:-192.168.220.0/28}
