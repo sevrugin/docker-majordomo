@@ -10,6 +10,7 @@ mkdir /mnt/data
 cd /mnt/data
 git clone https://github.com/sevrugin/docker-majordomo.git
 cd docker-majordomo
+cp .env.example .env
 
 make init-app
 make init-db # if you see some errors just restart the command
