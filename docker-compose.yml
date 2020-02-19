@@ -12,8 +12,7 @@ services:
             - NGINX_HOST=${NGINX_HOST:-dev.local}
         command: "nginx -g 'daemon off;'"
         restart: always
-        networks:
-            - internal
+        network_mode: "host"
         depends_on:
             - php
     php:
@@ -31,8 +30,7 @@ services:
         environment:
             PHP_IDE_CONFIG: serverName=${NGINX_HOST:-dev.local}
             XDEBUG_CONFIG:  remote_host=${XDEBUG_LOCAL_IP:-192.168.220.1}
-        networks:
-            - internal
+        network_mode: "host"
         depends_on:
             - mysqldb
     myadmin:
@@ -45,8 +43,7 @@ services:
         environment:
             - PMA_ARBITRARY=1
             - PMA_HOST=${DB_HOST}
-        networks:
-            - internal
+        network_mode: "bridge"
         depends_on:
             - mysqldb
     mysqldb:
@@ -63,12 +60,4 @@ services:
             - MYSQL_PASSWORD=${DB_PASSWORD}
         ports:
             - "3306:3306"
-        networks:
-            - internal
-networks:
-    internal:
-        driver: bridge
-        ipam:
-            driver: default
-            config:
-                - subnet: ${INTERNAL_SUBNET:-192.168.220.0/28}
+        network_mode: "host"
