@@ -24,8 +24,12 @@ services:
                 USER_ID: ${USER_ID:-0}
                 GROUP_ID: ${GROUP_ID:-0}
         environment:
-            PHP_IDE_CONFIG: serverName=${NGINX_HOST:-dev.local}
-            XDEBUG_CONFIG:  remote_host=${XDEBUG_LOCAL_IP:-192.168.0.12}
+            PHP_IDE_CONFIG:     serverName=${NGINX_HOST:-dev.local}
+            XDEBUG_CONFIG:      remote_host=${XDEBUG_LOCAL_IP:-192.168.0.12}
+            MYSQL_HOST:         ${DB_HOST}
+            MYSQL_DATABASE:     ${DB_DATABASE}
+            MYSQL_USER:         ${DB_USERNAME}
+            MYSQL_PASSWORD:     ${DB_PASSWORD}
         network_mode: "host"
         restart: always
         depends_on:
