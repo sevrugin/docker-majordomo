@@ -44,7 +44,7 @@ docker-compose up
 ```
 
 Step 4:
-
+```
 	a) For initial setup "majordomo" follow http://your-ip-address/popup/first_start.html
 		- go to Control pannel -> Check updates -> Advance config and set to Alfa (latest updates)
 		- install MQTT plugin (Control pannel -> Plugin market), and set to:
@@ -58,7 +58,7 @@ Step 4:
 			- Go to Homebridge Settings and turn on Homebridge Insecure Mode / Enable Accessory Control
 			- install Homebridge Mqtt plugin (https://github.com/cflurin/homebridge-mqtt)
 			- add to Homebridge configuration next block:
-			```
+```
 			{
 			"platform": "mqtt",
 			"name": "mqtt",
@@ -68,7 +68,7 @@ Step 4:
 			"username": "YOUR_USERNAME",
 			"password": "YOUR_PASSWORD"
 			}
-			```
+```
 		Majordomo part:
 			- install HomeKit plugin (Control pannel -> Plugin market)
 			- follow it and push Enable service
@@ -77,3 +77,4 @@ Step 4:
 				Code: require(DIR_MODULES.'devices/processHomebridgeMQTT.inc.php');
 			- follow Objects -> HomeBridgeClass -> Edit -> Properties, and set to all titles:
 				On-change Method -> dataUpdated
+```
