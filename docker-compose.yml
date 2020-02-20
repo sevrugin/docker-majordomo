@@ -5,18 +5,14 @@ services:
         volumes:
             - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
             - "./app/:/var/www/html"
-        ports:
-            - "80:80"
-            - "443:443"
         environment:
             - NGINX_HOST=${NGINX_HOST:-dev.local}
         command: "nginx -g 'daemon off;'"
-        restart: always
         network_mode: "host"
+        restart: always
         depends_on:
             - php
     php:
-        restart: always
         volumes:
             - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
             - "./etc/supervisor.conf:/etc/supervisor.conf"
@@ -28,27 +24,32 @@ services:
                 USER_ID: ${USER_ID:-0}
                 GROUP_ID: ${GROUP_ID:-0}
         environment:
-            PHP_IDE_CONFIG: serverName=${NGINX_HOST:-dev.local}
-            XDEBUG_CONFIG:  remote_host=${XDEBUG_LOCAL_IP:-192.168.220.1}
+            PHP_IDE_CONFIG:     serverName=${NGINX_HOST:-dev.local}
+            XDEBUG_CONFIG:      remote_host=${XDEBUG_LOCAL_IP:-192.168.0.12}
+            MYSQL_HOST:         ${DB_HOST}
+            MYSQL_DATABASE:     ${DB_DATABASE}
+            MYSQL_USER:         ${DB_USERNAME}
+            MYSQL_PASSWORD:     ${DB_PASSWORD}
         network_mode: "host"
+        restart: always
         depends_on:
             - mysqldb
     myadmin:
-        restart: always
         build:
             context: .
             dockerfile: ./etc/docker/phpmyadmin/Dockerfile
-        ports:
-            - "8081:80"
         environment:
             - PMA_ARBITRARY=1
             - PMA_HOST=${DB_HOST}
+            - PMA_PORT=${DB_PORT}
         network_mode: "bridge"
+        ports:
+            - "8081:80"
+        restart: always
         depends_on:
             - mysqldb
     mysqldb:
         image: linuxserver/mariadb
-        restart: always
         volumes:
             - "./data/mysql:/config/databases"
         env_file:
@@ -57,7 +58,26 @@ services:
             - MYSQL_DATABASE=${DB_DATABASE}
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
             - MYSQL_USER=${DB_USERNAME}
-            - MYSQL_PASSWORD=${DB_PASSWORD}
-        ports:
-            - "3306:3306"
+        restart: always
         network_mode: "host"
+
+    # Additional services
+    mosquitto:
+        image: eclipse-mosquitto:latest
+        volumes:
+            - ./etc/mosquitto/config:/mosquitto/config
+            - ./data/mosquitto/data:/mosquitto/data
+        network_mode: "host"
+        user: '${USER_ID:-0}:${GROUP_ID:-0}'
+        restart: always
+    homebridge:
+        image: oznu/homebridge:latest
+        network_mode: host
+        volumes:
+            - ./data/homebridge:/homebridge
+        environment:
+            - PGID=${GROUP_ID:-0}
+            - PUID=${USER_ID:-0}
+            - HOMEBRIDGE_CONFIG_UI=1
+            - HOMEBRIDGE_CONFIG_UI_PORT=8080
+        restart: always
