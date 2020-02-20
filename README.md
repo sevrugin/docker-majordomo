@@ -80,7 +80,7 @@ Title: dataUpdated
 Code: require(DIR_MODULES.'devices/processHomebridgeMQTT.inc.php');
 ```
 
-- follow Objects -> HomeBridgeClass -> Edit -> Properties, and set to all titles:
+	- follow Objects -> HomeBridgeClass -> Edit -> Properties, and set to all titles:
 
 ```
 On-change Method -> dataUpdated
