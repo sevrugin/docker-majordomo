@@ -44,7 +44,7 @@ docker-compose up
 ```
 
 Step 4:
-```
+
 	a) For initial setup "majordomo" follow http://your-ip-address/popup/first_start.html
 		- go to Control pannel -> Check updates -> Advance config and set to Alfa (latest updates)
 		- install MQTT plugin (Control pannel -> Plugin market), and set to:
@@ -77,4 +77,3 @@ Step 4:
 				Code: require(DIR_MODULES.'devices/processHomebridgeMQTT.inc.php');
 			- follow Objects -> HomeBridgeClass -> Edit -> Properties, and set to all titles:
 				On-change Method -> dataUpdated
-```
