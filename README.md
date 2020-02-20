@@ -28,7 +28,7 @@ copy deffault config and make changes
 ```
 
 cp .env.example .env && nano .env
-make clean
+sudo make clean
 make init-all
 ```
 All modules will be configured automatically
