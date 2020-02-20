@@ -76,14 +76,14 @@ Password: Admin
 }
 ```
 - Majordomo part:
-* install HomeKit plugin (Control pannel -> Plugin market)
-* follow it and push Enable service
-* follow Objects -> HomeBridgeClass -> Edit -> Methods -> Add new method, and set to:
+	- install HomeKit plugin (Control pannel -> Plugin market)
+	- follow it and push Enable service
+	- follow Objects -> HomeBridgeClass -> Edit -> Methods -> Add new method, and set to:
 ```
 Title: dataUpdated
 Code: require(DIR_MODULES.'devices/processHomebridgeMQTT.inc.php');
 ```
-*follow Objects -> HomeBridgeClass -> Edit -> Properties, and set to all titles:
+- follow Objects -> HomeBridgeClass -> Edit -> Properties, and set to all titles:
 ```
 On-change Method -> dataUpdated
 ```
