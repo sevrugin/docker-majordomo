@@ -56,14 +56,10 @@ Subscription path: $SYS/broker/uptime, homebridge/from/#
 b) For initial setup "phpmyadmin" follow http://your-ip-address:8081
 
 c) For initial setup "homebriedge" follow http://your-ip-address:8080
-- Homebriedge part:
-```
-Login: Admin
-Password: Admin
-```
-- Go to Homebridge Settings and turn on Homebridge Insecure Mode / Enable Accessory Control
-- install Homebridge Mqtt plugin (https://github.com/cflurin/homebridge-mqtt)
-- add to Homebridge configuration next block:
+- Homebriedge part (Login: Admin, Password: Admin):
+	- Go to Homebridge Settings and turn on Homebridge Insecure Mode / Enable Accessory Control
+	- install Homebridge Mqtt plugin (https://github.com/cflurin/homebridge-mqtt)
+	- add to Homebridge configuration next block:
 ```
 {
 "platform": "mqtt",
