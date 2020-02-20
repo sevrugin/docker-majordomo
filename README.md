@@ -44,6 +44,8 @@ docker-compose up
 ```
 
 Step 4:
+```
+```
 
 	a) For initial setup "majordomo" follow http://your-ip-address/popup/first_start.html
 		- go to Control pannel -> Check updates -> Advance config and set to Alfa (latest updates)
