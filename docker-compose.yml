@@ -51,7 +51,7 @@ services:
     mysqldb:
         image: linuxserver/mariadb
         volumes:
-            - "./data/mysql:/var/lib/mysql"
+            - "./data/mysql:/config/databases"
         env_file:
             - ".env"
         environment:
