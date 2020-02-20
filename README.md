@@ -2,6 +2,10 @@
 
 Make `ssh` login to your Raspberry PI, and go to steps:
 
+Step0:
+
+docker install
+
 
 Step1: 
 
@@ -10,6 +14,7 @@ mkdir /mnt/data
 cd /mnt/data
 git clone https://github.com/sevrugin/docker-majordomo.git
 cd docker-majordomo
+copy deffault config and make changes
 cp .env.example .env && nano .env
 
 make clean
