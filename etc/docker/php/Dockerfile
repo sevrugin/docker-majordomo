@@ -1,7 +1,15 @@
 FROM php:7.3-fpm
 
-RUN apt-get update && apt-get install -y mc htop procps iputils-ping
-RUN docker-php-ext-install mysqli sockets
+RUN apt-get update && apt-get install -y \
+    mc htop procps iputils-ping \
+    # needed for gd
+    libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
+    # for media
+    ffmpeg smartmontools net-tools
+
+RUN docker-php-ext-install mysqli sockets gd
+
+RUN docker-php-ext-configure mbstring --enable-mbstring
 
 RUN        apt-get -y install supervisor && \
            mkdir -p /var/log/supervisor && \

@@ -32,9 +32,9 @@ clean:
 	@ rm -rf app data
 	@ printf '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)\n'
 
-init-all: init-app init-db
+init-all: init-app init-db ## Init all project
 
-init-app:
+init-app: ## Init app folder
 	@ if [ ! -d "./app" ]; then \
 		$(ECHO) -n 'Make app folder...'; \
 		mkdir -p ./app; \
@@ -53,7 +53,7 @@ init-app:
 		$(ECHO) '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)'; \
 	fi
 
-init-db:
+init-db: ## Init database
 	@ if [ ! -d "./app" ]; then \
 		$(ECHO) '$(WARN_COLOR)"app" folder not found. Run `make init-app` first$(NO_COLOR)'; \
 		exit 1; \
@@ -80,7 +80,7 @@ init-db:
 	@ docker-compose exec mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) -e "FLUSH PRIVILEGES"
 	@ cat ./app/db_terminal.sql | docker-compose exec -T mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) $(DB_DATABASE)
 
-pull: ## git pull cod
+pull: ## git pull majordomo code
 	@ cd ./app | git pull
 build: ## Build docker containers
 	@$(call docker_compose, build)
@@ -100,7 +100,7 @@ exec-mysql: ## Enter to mysql container
 	@$(call docker_compose, exec mysqldb bash)
 
 exec-app: ## Enter to app container
-	@$(call docker_compose, exec php bash)
+	@$(call docker_compose, exec --user 1000 php bash)
 
 
 %:
