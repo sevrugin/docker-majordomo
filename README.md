@@ -10,7 +10,7 @@ mkdir /mnt/data
 cd /mnt/data
 git clone https://github.com/sevrugin/docker-majordomo.git
 cd docker-majordomo
-cp .env.example .env
+cp .env.example .env && nano .env
 
 make clean
 make init-all
