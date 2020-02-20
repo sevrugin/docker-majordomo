@@ -46,8 +46,8 @@ docker-compose up
 Step 4:
 
 a) For initial setup "majordomo" follow http://your-ip-address/popup/first_start.html
-- go to Control pannel -> Check updates -> Advance config and set to Alfa (latest updates)
-- install MQTT plugin (Control pannel -> Plugin market), and set to:
+	- go to Control pannel -> Check updates -> Advance config and set to Alfa (latest updates)
+	- install MQTT plugin (Control pannel -> Plugin market), and set to:
 ```
 Hostname: 127.0.0.1
 Subscription path: $SYS/broker/uptime, homebridge/from/#
@@ -56,14 +56,14 @@ Subscription path: $SYS/broker/uptime, homebridge/from/#
 b) For initial setup "phpmyadmin" follow http://your-ip-address:8081
 
 c) For initial setup "homebriedge" follow http://your-ip-address:8080
-- Homebriedge part:
+	- Homebriedge part:
 ```
 Login: Admin
 Password: Admin
 ```
-- Go to Homebridge Settings and turn on Homebridge Insecure Mode / Enable Accessory Control
-- install Homebridge Mqtt plugin (https://github.com/cflurin/homebridge-mqtt)
-- add to Homebridge configuration next block:
+	- Go to Homebridge Settings and turn on Homebridge Insecure Mode / Enable Accessory Control
+	- install Homebridge Mqtt plugin (https://github.com/cflurin/homebridge-mqtt)
+	- add to Homebridge configuration next block:
 ```
 {
 "platform": "mqtt",
@@ -83,7 +83,7 @@ Password: Admin
 Title: dataUpdated
 Code: require(DIR_MODULES.'devices/processHomebridgeMQTT.inc.php');
 ```
-- follow Objects -> HomeBridgeClass -> Edit -> Properties, and set to all titles:
+	- follow Objects -> HomeBridgeClass -> Edit -> Properties, and set to all titles:
 ```
 On-change Method -> dataUpdated
 ```
