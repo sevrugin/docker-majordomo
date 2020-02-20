@@ -1,6 +1,6 @@
 FROM php:7.3-fpm
 
-RUN apt-get update && apt-get install -y mc htop procps
+RUN apt-get update && apt-get install -y mc htop procps iputils-ping
 RUN docker-php-ext-install mysqli sockets
 
 RUN        apt-get -y install supervisor && \
