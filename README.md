@@ -37,7 +37,7 @@ Also you can use `make init-app` and `make init-db` to init modules separately
 
 Step 2: (or `-d` to start as daemon)
 
-At first time you can use use `--build` parameter
+At first time you should use use `--build` parameter
 
 ```
 docker-compose up
