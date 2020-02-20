@@ -46,7 +46,8 @@ docker-compose up
 Step 4:
 
 a) For initial setup "majordomo" follow http://your-ip-address/popup/first_start.html
-	- go to Control pannel -> Check updates -> Advance config and set to Alfa (latest updates).
+
+	- go to Control pannel -> Check updates -> Advance config and set to Alfa (latest updates)
 	- install MQTT plugin (Control pannel -> Plugin market), and set to:
 ```
 Hostname: 127.0.0.1
@@ -56,6 +57,7 @@ Subscription path: $SYS/broker/uptime, homebridge/from/#
 b) For initial setup "phpmyadmin" follow http://your-ip-address:8081
 
 c) For initial setup "homebriedge" follow http://your-ip-address:8080
+
 - Homebriedge part (Login: Admin, Password: Admin):
 	- Go to Homebridge Settings and turn on Homebridge Insecure Mode / Enable Accessory Control
 	- install Homebridge Mqtt plugin (https://github.com/cflurin/homebridge-mqtt)
