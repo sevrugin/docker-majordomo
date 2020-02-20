@@ -60,3 +60,24 @@ services:
             - MYSQL_USER=${DB_USERNAME}
         restart: always
         network_mode: "host"
+
+    # Additional services
+    mosquitto:
+        image: eclipse-mosquitto:latest
+        volumes:
+            - ./etc/mosquitto/config:/mosquitto/config
+            - ./data/mosquitto/data:/mosquitto/data
+        network_mode: "host"
+        user: '${USER_ID:-0}:${GROUP_ID:-0}'
+        restart: always
+    homebridge:
+        image: oznu/homebridge:latest
+        network_mode: host
+        volumes:
+            - ./data/homebridge:/homebridge
+        environment:
+            - PGID=${GROUP_ID:-0}
+            - PUID=${USER_ID:-0}
+            - HOMEBRIDGE_CONFIG_UI=1
+            - HOMEBRIDGE_CONFIG_UI_PORT=8080
+        restart: always
