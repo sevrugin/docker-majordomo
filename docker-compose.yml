@@ -50,7 +50,7 @@ services:
         image: linuxserver/mariadb
         restart: always
         volumes:
-            - "./data/mysql:/var/lib/mysql"
+            - "./data/mysql:/config/databases"
         env_file:
             - ".env"
         environment:
