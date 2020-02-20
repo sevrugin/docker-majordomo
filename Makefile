@@ -1,8 +1,18 @@
+#!/bin/bash
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 #envs
 cnf ?= .env
 include $(cnf)
 export $(shell sed 's/=.*//' $(cnf))
+
+# Colors
+NO_COLOR?=\x1b[0m
+OK_COLOR?=\x1b[32;01m
+ERROR_COLOR?=\x1b[31;01m
+WARN_COLOR?=\x1b[33;01m
+
+ECHO?=/bin/echo -e
+SED?=/bin/sed -i
 
 #guid/uid
 export UID = $(shell id -u)
@@ -18,31 +28,49 @@ help:
 .DEFAULT_GOAL := help
 
 clean:
+	@ printf '$(ERROR_COLOR)Cleaning folder...$(NO_COLOR)'
 	@ rm -rf app data
+	@ printf '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)\n'
+
+init-all: init-app init-db
+
 init-app:
 	@ if [ ! -d "./app" ]; then \
-		echo "Make app folder\n"; \
+		$(ECHO) -n 'Make app folder...'; \
 		mkdir -p ./app; \
+		$(ECHO) '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)'; \
+		$(ECHO) -n 'Clone majordomo repository...'; \
+		$(ECHO) '\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)'; \
 		git clone -b alpha https://github.com/sergejey/majordomo.git ./app; \
 	fi
 	@ if [ ! -f ./app/config.php ]; then \
+		$(ECHO) -n 'Make app/config.php...'; \
 		cp ./app/config.php.sample ./app/config.php; \
+		$(SED) "s/'DB_HOST', 'localhost'/'DB_HOST', \$$_ENV['MYSQL_HOST']/g" ./app/config.php; \
+		$(SED) "s/'DB_NAME', 'db_terminal'/'DB_NAME', \$$_ENV['MYSQL_DATABASE']/g" ./app/config.php; \
+		$(SED) "s/'DB_USER', 'root'/'DB_USER', \$$_ENV['MYSQL_USER']/g" ./app/config.php; \
+		$(SED) "s/'DB_PASSWORD', ''/'DB_PASSWORD', \$$_ENV['MYSQL_PASSWORD']/g" ./app/config.php; \
+		$(ECHO) '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)'; \
 	fi
 
 init-db:
 	@ if [ ! -d "./app" ]; then \
-		echo "run 'make init-app' first\n"; \
+		$(ECHO) '$(WARN_COLOR)"app" folder not found. Run `make init-app` first$(NO_COLOR)'; \
 		exit 1; \
 	fi
 	@ if [ ! -d "./data" ]; then \
 		mkdir -p ./data; \
 		touch wait-for-db; \
 	fi
+	@$(ECHO) -n 'Starting "mysqldb"...'
+	@$(ECHO) '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)'
 	@ docker-compose up -d mysqldb
 	@ if [ -f "./wait-for-db" ]; then \
 		rm wait-for-db; \
 		sleep 10; \
 	fi
+	@$(ECHO) -n 'Configuring DB...'
+	@$(ECHO) '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)'
 	@ docker-compose exec mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) -e "DROP DATABASE IF EXISTS $(DB_DATABASE);"
 	@ docker-compose exec mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) -e "CREATE DATABASE $(DB_DATABASE);"
 	@ docker-compose exec mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) -e "DROP USER IF EXISTS $(DB_USERNAME)@'%';"
