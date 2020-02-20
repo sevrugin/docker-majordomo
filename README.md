@@ -43,7 +43,7 @@ At first time you can use use `--build` parameter
 docker-compose up
 ```
 
-Step 4:
+Step 3:
 
 a) For initial setup "majordomo" follow http://your-ip-address/popup/first_start.html
 
