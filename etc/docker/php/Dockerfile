@@ -5,9 +5,12 @@ RUN apt-get update && apt-get install -y \
     # needed for gd
     libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
     # for media
-    ffmpeg smartmontools net-tools
+    ffmpeg smartmontools net-tools imagemagick libmagickwand-dev
 
 RUN docker-php-ext-install mysqli sockets gd
+
+RUN echo '\n' | pecl install imagick --with-php-config=/usr/local/bin/php-config --with-imagick && \
+    docker-php-ext-enable imagick
 
 RUN docker-php-ext-configure mbstring --enable-mbstring
 
