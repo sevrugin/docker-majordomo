@@ -61,9 +61,9 @@ c) For initial setup "homebriedge" follow http://your-ip-address:8080
 Login: Admin
 Password: Admin
 ```
-	- Go to Homebridge Settings and turn on Homebridge Insecure Mode / Enable Accessory Control
-	- install Homebridge Mqtt plugin (https://github.com/cflurin/homebridge-mqtt)
-	- add to Homebridge configuration next block:
+- Go to Homebridge Settings and turn on Homebridge Insecure Mode / Enable Accessory Control
+- install Homebridge Mqtt plugin (https://github.com/cflurin/homebridge-mqtt)
+- add to Homebridge configuration next block:
 ```
 {
 "platform": "mqtt",
