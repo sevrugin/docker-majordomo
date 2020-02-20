@@ -67,7 +67,7 @@ init-db: ## Init database
 	@ docker-compose up -d mysqldb
 	@ if [ -f "./wait-for-db" ]; then \
 		rm wait-for-db; \
-		sleep 10; \
+		sleep 30; \
 	fi
 	@$(ECHO) -n 'Configuring DB...'
 	@$(ECHO) '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)'
