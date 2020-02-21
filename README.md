@@ -22,15 +22,12 @@ mkdir /mnt/data
 cd /mnt/data
 git clone https://github.com/sevrugin/docker-majordomo.git
 cd docker-majordomo
-
 ```
 copy deffault config and make changes
 ```
-
 cp .env.example .env && nano .env
 sudo make clean
 make init-all
-
 ```
 All modules will be configured automatically
 
