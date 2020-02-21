@@ -60,25 +60,28 @@ init-db: ## Init database
 	fi
 	@ if [ ! -d "./data" ]; then \
 		mkdir -p ./data; \
-		touch wait-for-db; \
 	fi
 	@$(ECHO) -n 'Starting "mysqldb"...'
+	@ docker-compose up -d mysqldb > /dev/null 2>&1
+	@ while ! docker ps | grep mysqldb > /dev/null 2>&1; do sleep 1; done
 	@$(ECHO) '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)'
-	@ docker-compose up -d mysqldb
-	@ if [ -f "./wait-for-db" ]; then \
-		rm wait-for-db; \
-		sleep 30; \
-	fi
-	@$(ECHO) -n 'Configuring DB...'
-	@$(ECHO) '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)'
-	@ docker-compose exec mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) -e "DROP DATABASE IF EXISTS $(DB_DATABASE);"
-	@ docker-compose exec mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) -e "CREATE DATABASE $(DB_DATABASE);"
-	@ docker-compose exec mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) -e "DROP USER IF EXISTS $(DB_USERNAME)@'%';"
-	@ docker-compose exec mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) -e "CREATE USER IF NOT EXISTS $(DB_USERNAME)@'%' IDENTIFIED BY '$(DB_PASSWORD)';"
-	@ docker-compose exec mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) -e "GRANT ALL ON $(DB_DATABASE).* TO $(DB_USERNAME)@'%'"
-	@ docker-compose exec mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) -e "GRANT RELOAD ON *.* TO $(DB_USERNAME)@'%'"
-	@ docker-compose exec mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) -e "FLUSH PRIVILEGES"
+
+	@$(ECHO) -n 'Creating DB, User and previlegies...'
+	@ docker-compose exec mysqldb bash -c 'while ! mysql -p$(MYSQL_ROOT_PASSWORD) -e "SHOW DATABASES" > /dev/null 2>&1; do sleep 1; done && \
+		mysql -p$(MYSQL_ROOT_PASSWORD) -e "DROP DATABASE IF EXISTS $(DB_DATABASE); \
+		CREATE DATABASE $(DB_DATABASE); \
+		DROP USER IF EXISTS $(DB_USERNAME)@\"%\"; \
+		CREATE USER IF NOT EXISTS $(DB_USERNAME)@\"%\" IDENTIFIED BY \"$(DB_PASSWORD)\"; \
+		GRANT ALL ON $(DB_DATABASE).* TO $(DB_USERNAME)@\"%\"; \
+		GRANT RELOAD ON *.* TO $(DB_USERNAME)@\"%\"; \
+		FLUSH PRIVILEGES; \
+		"'
+	@$(ECHO) '\t\t$(OK_COLOR)[OK]$(NO_COLOR)'
+
+	@$(ECHO) -n 'Loading dump file...'
 	@ cat ./app/db_terminal.sql | docker-compose exec -T mysqldb mysql -p$(MYSQL_ROOT_PASSWORD) $(DB_DATABASE)
+	@$(ECHO) '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)'
+	@ docker-compose rm -sf mysqldb > /dev/null 2>&1 &
 
 pull: ## git pull majordomo code
 	@ cd ./app | git pull
