@@ -52,12 +52,15 @@ services:
         image: linuxserver/mariadb
         volumes:
             - "./data/mysql:/config/databases"
+            - "./data/logs/mysql:/config/log/mysql"
         env_file:
             - ".env"
         environment:
             - MYSQL_DATABASE=${DB_DATABASE}
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
             - MYSQL_USER=${DB_USERNAME}
+            - PGID=0
+            - PUID=0
         restart: always
         network_mode: "host"
 

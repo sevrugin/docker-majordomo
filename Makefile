@@ -29,7 +29,7 @@ help:
 
 clean:
 	@ printf '$(ERROR_COLOR)Cleaning folder...$(NO_COLOR)'
-	@ rm -rf app data
+	@ sudo rm -rf app data
 	@ printf '\t\t\t\t$(OK_COLOR)[OK]$(NO_COLOR)\n'
 
 init-all: init-app init-db ## Init all project
