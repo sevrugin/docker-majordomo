@@ -30,6 +30,7 @@ copy deffault config and make changes
 cp .env.example .env && nano .env
 sudo make clean
 make init-all
+
 ```
 All modules will be configured automatically
 
@@ -40,14 +41,21 @@ Step 2: (or `-d` to start as daemon)
 At first time you should use use `--build` parameter
 
 ```
+docker-compose up --build
+```
+Rest of the time
+```
 docker-compose up
 ```
+
+wait 3-5 minutes
 
 Step 3:
 
 a) For initial setup "majordomo" follow http://your-ip-address/popup/first_start.html
 
-- go to Control pannel -> Check updates -> Advance config and set to Alfa (latest updates)
+- go to Control pannel -> Check updates -> Advance config and set to Alfa (latest updates) and reboot rpi/docker containers
+- update majordomo from control panel and reboot rpi/docker containers
 - install MQTT plugin (Control pannel -> Plugin market), and set to:
 	
 ```
