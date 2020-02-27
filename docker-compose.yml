@@ -84,3 +84,16 @@ services:
             - HOMEBRIDGE_CONFIG_UI=1
             - HOMEBRIDGE_CONFIG_UI_PORT=8080
         restart: always
+    zigbee2mqtt:
+        container_name: zigbee2mqtt
+        image: koenkk/zigbee2mqtt
+        volumes:
+            - ./data/zigbee2mqtt:/app/data
+            - /run/udev:/run/udev:ro
+        devices:
+            - /dev/ttyACM0:/dev/ttyACM0
+        restart: always
+        network_mode: host
+        privileged: true
+        environment:
+            - TZ=Europe/Kiev
