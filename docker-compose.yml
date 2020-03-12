@@ -84,3 +84,14 @@ services:
             - HOMEBRIDGE_CONFIG_UI=1
             - HOMEBRIDGE_CONFIG_UI_PORT=8080
         restart: always
+    node-red:
+        image: nodered/node-red:latest
+        environment:
+            - TZ=Europe/Kiev
+        ports:
+            - "1880:1880"
+        network_mode: host
+        volumes:
+            - ./data/node-red/data:/data
+        user: '${USER_ID:-0}:${GROUP_ID:-0}'
+        restart: always
