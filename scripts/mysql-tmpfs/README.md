@@ -19,3 +19,7 @@ sudo update-rc.d ramdisk default
 3. Add next job in the end of crontab (`sudo vim /etc/crontab`)
 
 `*/10 * * * * root        /etc/init.d/ramdisk sync >> /dev/null 2>&1`
+
+4. Reboot your system
+
+```sudo reboot```
