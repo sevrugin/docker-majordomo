@@ -46,9 +46,9 @@ try:
         f.close()
 
         pwmValue = map(temp, 55, 70, 35, 100)
-        f = open(directory + "/cpu.fun", "w")
+        f = open(directory + "/cpu.fan", "w")
         if temp < 50 and False == pwmStopped:
-            pwm.stop();
+            pwm.stop()
             f.write("0")
             pwmStopped = True
         elif temp > 55 and True == pwmStopped:
