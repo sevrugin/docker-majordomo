@@ -54,6 +54,7 @@ try:
         elif temp > 55 and True == pwmStopped:
             f.write("%d" % pwmValue)
             pwm.start(pwmValue)
+            pwm.ChangeDutyCycle(pwmValue)
             pwmStopped = False
         elif False == pwmStopped:
             f.write("%d" % pwmValue)
