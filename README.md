@@ -95,7 +95,7 @@ Code: require(DIR_MODULES.'devices/processHomebridgeMQTT.inc.php');
 On-change Method -> dataUpdated
 ```
 
-### dditional improvements
+### Additional improvements
 
 #### Working with MySQL data from the ramdisk
 
