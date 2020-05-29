@@ -73,17 +73,17 @@ services:
         network_mode: "host"
         user: '${USER_ID:-0}:${GROUP_ID:-0}'
         restart: always
-    homebridge:
-        image: oznu/homebridge:latest
-        network_mode: host
-        volumes:
-            - ./data/homebridge:/homebridge
-        environment:
-            - PGID=${GROUP_ID:-0}
-            - PUID=${USER_ID:-0}
-            - HOMEBRIDGE_CONFIG_UI=1
-            - HOMEBRIDGE_CONFIG_UI_PORT=8080
-        restart: always
+        #    homebridge:
+        #image: oznu/homebridge:latest
+        #network_mode: host
+        #volumes:
+        #    - ./data/homebridge:/homebridge
+        #environment:
+        #    - PGID=${GROUP_ID:-0}
+        #    - PUID=${USER_ID:-0}
+        #    - HOMEBRIDGE_CONFIG_UI=1
+        #    - HOMEBRIDGE_CONFIG_UI_PORT=8080
+        #restart: always
     zigbee2mqtt:
         container_name: zigbee2mqtt
         image: koenkk/zigbee2mqtt
@@ -97,3 +97,14 @@ services:
         privileged: true
         environment:
             - TZ=Europe/Kiev
+    node-red:
+        image: nodered/node-red:latest
+        environment:
+            - TZ=Europe/Kiev
+        ports:
+            - "1880:1880"
+        network_mode: host
+        volumes:
+            - ./data/node-red/data:/data
+        user: '${USER_ID:-0}:${GROUP_ID:-0}'
+        restart: always

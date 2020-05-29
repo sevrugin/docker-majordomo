@@ -1,0 +1,35 @@
+#! /bin/sh
+# /etc/init.d/ramdisk
+### BEGIN INIT INFO
+# Provides:          sample.py
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start daemon at boot time
+# Description:       Enable service provided by daemon.
+### END INIT INFO
+
+case "$1" in
+  start)
+    echo "Copying files to ramdisk"
+    rsync -av /mnt/data/docker-majordomo/data/mysql-real/ /mnt/data/docker-majordomo/data/mysql/
+    echo [`date +"%Y-%m-%d %H:%M"`] Ramdisk Synched from HD >> /var/log/ramdisk_sync.log
+    ;;
+  sync)
+    echo "Synching files from ramdisk to Harddisk"
+    echo [`date +"%Y-%m-%d %H:%M"`] Ramdisk Synched to HD >> /var/log/ramdisk_sync.log
+    rsync -av --delete --recursive --force /mnt/data/docker-majordomo/data/mysql/ /mnt/data/docker-majordomo/data/mysql-real/
+    ;;
+  stop)
+    echo "Synching logfiles from ramdisk to Harddisk"
+    echo [`date +"%Y-%m-%d %H:%M"`] Ramdisk Synched to HD >> /var/log/ramdisk_sync.log
+    rsync -av --delete --recursive --force /mnt/data/docker-majordomo/data/mysql/ /mnt/data/docker-majordomo/data/mysql-real/
+    ;;
+  *)
+    echo "Usage: /etc/init.d/ramdisk {start|stop|sync}"
+    exit 1
+    ;;
+esac
+
+exit 0
