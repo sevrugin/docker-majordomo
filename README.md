@@ -95,9 +95,9 @@ Code: require(DIR_MODULES.'devices/processHomebridgeMQTT.inc.php');
 On-change Method -> dataUpdated
 ```
 
-##Additional improvements
+### dditional improvements
 
-###Working with MySQL data from the ramdisk
+#### Working with MySQL data from the ramdisk
 
 You are able to move you MySQL data into the RAM disk. This option make your system faster but will use near 200Mb of memory.
 
