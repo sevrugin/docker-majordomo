@@ -1,6 +1,7 @@
 # docker-majordomo
 
-***tested on Raspbian buster
+***tested on Raspbian buster (Release date: 2020-05-27)
+https://www.raspberrypi.org/downloads/
 
 Make `ssh` login to your Raspberry PI, and go to steps:
 
@@ -9,16 +10,19 @@ Step0:
 Install Docker
 
 ```
-sudo apt install -y libffi-dev libssl-dev python python-pip
+sudo apt install -y libffi-dev libssl-dev python python-pip mc build-essential git
 curl -sSL https://get.docker.com | sh
 sudo usermod -aG docker pi
-sudo pip install docker-compose
+sudo reboot
+sudo pip3 install docker-compose
+sudo reboot
 ```
 
 Step1: 
 
 ```
-mkdir /mnt/data
+sudo mkdir /mnt/data
+sudo chown pi:pi /mnt/data/
 cd /mnt/data
 git clone https://github.com/sevrugin/docker-majordomo.git
 cd docker-majordomo
@@ -38,14 +42,14 @@ Step 2: (or `-d` to start as daemon)
 At first time you should use use `--build` parameter
 
 ```
-docker-compose up --build
+docker-compose up --build -d
 ```
 Rest of the time
 ```
-docker-compose up
+docker-compose up -d
 ```
 
-wait 3-5 minutes
+wait 20+ minutes
 
 Step 3:
 
@@ -62,9 +66,9 @@ Subscription path: $SYS/broker/uptime, homebridge/from/#
 
 b) For initial setup "phpmyadmin" follow http://your-ip-address:8081
 
-c) For initial setup "homebriedge" follow http://your-ip-address:8080
+c) For initial setup "homebridge" follow http://your-ip-address:8080
 
-- Homebriedge part (Login: Admin, Password: Admin):
+- Homebridge part (Login: Admin, Password: Admin):
 	- Go to Homebridge Settings and turn on Homebridge Insecure Mode / Enable Accessory Control
 	- install Homebridge Mqtt plugin (https://github.com/cflurin/homebridge-mqtt)
 	- add to Homebridge configuration next block:
@@ -102,3 +106,30 @@ On-change Method -> dataUpdated
 You are able to move you MySQL data into the RAM disk. This option make your system faster but will use near 200Mb of memory.
 
 https://github.com/sevrugin/docker-majordomo/tree/master/scripts/mysql-tmpfs
+
+### Optional - enable Pi4 64-bit raspbian kernel and update bootloader
+
+add to config.txt
+
+```
+sudo nano /boot/config.txt
+```
+
+and add to the end:
+
+```
+arm_64bit=1
+```
+
+then update rpi and reboot:
+
+```
+sudo rpi-update
+sudo reboot
+```
+
+test
+
+```
+uname -a
+```
