@@ -7,19 +7,22 @@ How to install:
 ```
 cd /mnt/data/docker-majordomo/
 docker-compose down
-sudo mv ./data/mysq ./data/mysql-real
+sudo mv ./data/mysql ./data/mysql-real
 sudo ln -s /mnt/data/docker-majordomo/scripts/mysql-tmpfs/ramdisk /etc/init.d/ramdisk 
-sudo update-rc.d ramdisk default
+sudo update-rc.d ramdisk defaults
 ```
 
-2. Add next string in the end of /etc/fstab (`sudo vim /etc/fstab`)
+2. Add next string in the end of /etc/fstab (`sudo nano /etc/fstab`)
 
 `tmpfs /mnt/data/docker-majordomo/data/mysql tmpfs size=512m 0 0`
 
-3. Add next job in the end of crontab (`sudo vim /etc/crontab`)
+3. Add next job in the end of crontab (`sudo nano /etc/crontab`)
 
 `*/10 * * * * root        /etc/init.d/ramdisk sync >> /dev/null 2>&1`
 
 4. Reboot your system
 
-```sudo reboot```
+```
+docker-compose up -d
+sudo reboot
+```
