@@ -1,4 +1,4 @@
-FROM resin/rpi-raspbian:jessie
+FROM balenalib/raspberrypi4-64:jessie
 
 RUN apt-get update && apt-get upgrade
 RUN apt-get install build-essential daemontools git -y
@@ -11,7 +11,7 @@ RUN make
 RUN make install
 RUN ln -s /usr/local/lib/libpigpio.so /usr/lib/libpigpio.so
 RUN mkdir -p  /etc/svscan/pigpiod
-RUN echo "#!/bin/bash\nif [ ! -f /var/run/pigpio.pid ]; then\n	echo 'Starting'\n	exec /opt/pigpio/pigpiod\nfi" > /etc/svscan/pigpiod/run
+RUN echo "#!/bin/bash\nif [ ! -f /var/run/pigpio.pid ]; then\n	echo 'Starting'\n	exec /opt/pigpio/pigpiod -l\nfi" > /etc/svscan/pigpiod/run
 RUN chmod +x /etc/svscan/pigpiod/run
 
 EXPOSE 8888
