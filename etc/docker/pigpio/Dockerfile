@@ -1,4 +1,4 @@
-FROM resin/rpi-raspbian:jessie
+FROM balenalib/raspberrypi4-64-raspbian:jessie
 MAINTAINER Krisztian Lachata <krisztian.lachata@gmail.com>
 
 RUN apt-get update && apt-get upgrade
