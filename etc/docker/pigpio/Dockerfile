@@ -1,5 +1,4 @@
-FROM balenalib/raspberrypi4-64-raspbian:jessie
-MAINTAINER Krisztian Lachata <krisztian.lachata@gmail.com>
+FROM resin/rpi-raspbian:jessie
 
 RUN apt-get update && apt-get upgrade
 RUN apt-get install build-essential daemontools git -y
