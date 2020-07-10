@@ -108,3 +108,17 @@ services:
             - ./data/node-red/data:/data
         user: '${USER_ID:-0}:${GROUP_ID:-0}'
         restart: always
+
+    homeassistant:
+        container_name: home-assistant
+        image: homeassistant/home-assistant:stable
+        volumes:
+            - ./data/homeassistant/config:/config
+        environment:
+            - TZ=Europe/Kiev
+        restart: always
+        network_mode: host
+        depends_on:
+            - node-red
+            - zigbee2mqtt
+            - mosquitto
